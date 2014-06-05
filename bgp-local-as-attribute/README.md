@@ -1,4 +1,4 @@
-Adding a New Routing Device to Your Network
+Configuring a Local AS for EBGP Sessions
 ===========
 
 This example is described in detail in the following document:
