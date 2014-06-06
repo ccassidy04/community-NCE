@@ -4,30 +4,32 @@
 
 ethernet-switching-options {
     analyzer multi-session {
-        input {
-{%- for iface in mirror_ports %}
+      input {
+        ingress {
+{%- for iface in host_ports %}
             interface {{ iface }}.0;
 {%- endfor %}
         }
         egress {
-{%- for iface in mirror_ports %}
+{%- for iface in host_ports %}
             interface {{ iface }}.0;
 {%- endfor %}
         }
-        output {
-            interface {{ mirror_cable.from }}.0;
-        }
+      }
+      output {
+        interface {{ mirror_cable.from }}.0;
+      }
     }
 }
 
 interfaces {
-{%- for iface in mirror_ports %}
+{%- for iface in host_ports %}
     {{ iface }} {
         unit 0 {
             family ethernet-switching {
                 port-mode access;
                 vlan {
-                    members {{ mirror_ports_vlan.name }};
+                    members {{ host_ports_vlan.name }};
                 }
             }
         }
@@ -80,6 +82,9 @@ vlans {
     {{ mirror_vlan.name }} {
         vlan-id {{ mirror_vlan.vlan_id }};
         no-mac-learning;
+    }
+    {{ host_ports_vlan.name }} {
+        vlan-id {{ host_ports_vlan.vlan_id }};
     }
 }
 
