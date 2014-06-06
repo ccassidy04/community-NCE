@@ -1,0 +1,156 @@
+##
+# DEVICE 1 CONFIGURAITON
+##
+
+interfaces {
+    fe-1/2/0 {
+        unit 1 {
+            family inet {
+                address 10.0.0.1/30;
+            }
+        }
+    }
+    lo0 {
+        unit 2 {
+            family inet {
+                address 192.168.0.1/32;
+            }
+        }
+    }
+}
+routing-options {
+    static {
+        route 10.1.0.0/30 next-hop 10.0.0.2;
+    }
+    autonomous-system 100;
+}
+protocols {
+    bgp {
+        group ext {
+            type external;
+            export [ send-direct send-static ];
+            peer-as 250;
+            neighbor 10.0.0.2;
+        }
+    }
+}
+policy-options {
+    policy-statement send-direct {
+        term 1 {
+            from protocol direct;
+            then accept;
+        }
+    }
+    policy-statement send-static {
+        term 1 {
+            from protocol static;
+            then accept;
+        }
+    }
+}
+
+## 
+# DEVICE 2 CONFIGURAITON
+##
+
+interfaces {
+    fe-1/2/0 {
+        unit 2 {
+            family inet {
+                address 10.0.0.2/30;
+            }
+        }
+    }
+    fe-1/2/1 {
+        unit 3 {
+            family inet {
+                address 10.1.0.1/30;
+            }
+        }
+    }
+    lo0 {
+        unit 2 {
+            family inet {
+                address 192.168.0.2/32;
+            }
+        }
+    }
+}
+routing-options {
+    autonomous-system 250;
+}
+protocols {
+    bgp {
+        group ext {
+            type external;
+            export [ send-direct send-static ];
+            neighbor 10.0.0.1 peer-as 100;
+            neighbor 10.1.0.2 peer-as 300;
+        }
+    }
+}
+policy-options {
+    policy-statement send-direct {
+        term 1 {
+            from protocol direct;
+            then accept;
+        }
+    }
+    policy-statement send-static {
+        term 1 {
+            from protocol static;
+            then accept;
+        }
+    }
+}
+
+##
+# DEVICE 3 CONFIGURATION
+##
+
+interfaces {
+    fe-1/2/0 {
+        unit 1 {
+            family inet {
+                address 10.1.0.2/30;
+            }
+        }
+    }
+    lo0 {
+        unit 2 {
+            family inet {
+                address 192.168.0.3/32;
+            }
+        }
+    }
+}
+routing-options {
+    static {
+        route 10.0.0.0/30 next-hop 10.1.0.1;
+    }
+    autonomous-system 300;
+}
+protocols {
+    bgp {
+        group ext {
+            type external;
+            export [ send-direct send-static ];
+            peer-as 250;
+            neighbor 10.1.0.1;
+        }
+    }
+}
+policy-options {
+    policy-statement send-direct {
+        term 1 {
+            from protocol direct;
+            then accept;
+        }
+    }
+    policy-statement send-static {
+        term 1 {
+            from protocol static;
+            then accept;
+        }
+    }
+}
