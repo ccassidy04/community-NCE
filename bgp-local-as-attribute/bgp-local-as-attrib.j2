@@ -1,0 +1,156 @@
+##
+# DEVICE 1 CONFIGURAITON
+##
+
+interfaces {
+    fe-1/2/0 {
+        unit 1 {
+            family inet {
+                address {{ d1fe_addr }};
+            }
+        }
+    }
+    lo0 {
+        unit 2 {
+            family inet {
+                address {{ d1lo0_addr }};
+            }
+        }
+    }
+}
+routing-options {
+    static {
+        route {{ d1static_prefix }}/{{ d1static_mask }} next-hop {{ d1static_nexthop }};
+    }
+    autonomous-system {{ d1local_as }};
+}
+protocols {
+    bgp {
+        group ext {
+            type external;
+            export [ send-direct send-static ];
+            peer-as {{ d1neighbor_as }};
+            neighbor {{ d1neighbor_addr }};
+        }
+    }
+}
+policy-options {
+    policy-statement send-direct {
+        term 1 {
+            from protocol direct;
+            then accept;
+        }
+    }
+    policy-statement send-static {
+        term 1 {
+            from protocol static;
+            then accept;
+        }
+    }
+}
+
+## 
+# DEVICE 2 CONFIGURAITON
+##
+
+interfaces {
+    fe-1/2/0 {
+        unit 2 {
+            family inet {
+                address {{ d2fe_addr }};
+            }
+        }
+    }
+    fe-1/2/1 {
+        unit 3 {
+            family inet {
+                address {{ d2fe121_addr }};
+            }
+        }
+    }
+    lo0 {
+        unit 2 {
+            family inet {
+                address {{ d2lo0_addr }};
+            }
+        }
+    }
+}
+routing-options {
+    autonomous-system {{ d2local_as }};
+}
+protocols {
+    bgp {
+        group ext {
+            type external;
+            export [ send-direct send-static ];
+            neighbor {{ d2neighbor1_addr }} peer-as {{ d2neighbor1_as }};
+            neighbor {{ d2neighbor2_addr }} peer-as {{ d2neighbor2_as }};
+        }
+    }
+}
+policy-options {
+    policy-statement send-direct {
+        term 1 {
+            from protocol direct;
+            then accept;
+        }
+    }
+    policy-statement send-static {
+        term 1 {
+            from protocol static;
+            then accept;
+        }
+    }
+}
+
+##
+# DEVICE 3 CONFIGURATION
+##
+
+interfaces {
+    fe-1/2/0 {
+        unit 1 {
+            family inet {
+                address {{ d3fe_addr }};
+            }
+        }
+    }
+    lo0 {
+        unit 2 {
+            family inet {
+                address {{ d3lo0_addr }};
+            }
+        }
+    }
+}
+routing-options {
+    static {
+        route {{ d3static_prefix }}/{{ d3static_mask }} next-hop {{ d3static_nexthop }};
+    }
+    autonomous-system {{ d3local_as }};
+}
+protocols {
+    bgp {
+        group ext {
+            type external;
+            export [ send-direct send-static ];
+            peer-as {{ d3neighbor_as }};
+            neighbor {{ d3neighbor_addr }};
+        }
+    }
+}
+policy-options {
+    policy-statement send-direct {
+        term 1 {
+            from protocol direct;
+            then accept;
+        }
+    }
+    policy-statement send-static {
+        term 1 {
+            from protocol static;
+            then accept;
+        }
+    }
+}

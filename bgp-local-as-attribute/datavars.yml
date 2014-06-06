@@ -1,0 +1,25 @@
+---
+d1fe_addr: 10.0.0.1/30
+d2fe_addr: 10.0.0.2/30
+d2fe121_addr: 10.1.0.1/30
+d3fe_addr: 10.1.0.2/30
+d1lo0_addr: 192.168.0.1/32
+d2lo0_addr: 192.168.0.2/32
+d3lo0_addr: 192.168.0.3/32
+d1static_prefix: 10.1.0.0
+d1static_mask: 30
+d3static_prefix: 10.0.0.0
+d3static_mask: 30
+d1static_nexthop: 10.0.0.2
+d3static_nexthop: 10.1.0.1
+d1local_as: 100
+d2local_as: 250
+d3local_as: 300
+d1neighbor_as: 250
+d2neighbor1_as: 100
+d2neighbor2_as: 300
+d3neighbor_as: 250
+d1neighbor_addr: 10.0.0.2
+d2neighbor1_addr: 10.0.0.1
+d2neighbor2_addr: 10.1.0.2
+d3neighbor_addr: 10.1.0.1
