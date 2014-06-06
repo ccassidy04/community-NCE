@@ -6,7 +6,44 @@ tunnel_interface: st0.1
 tunnel_zone: vpn
 trust_zone: trust
 psk: secretkey
-proposal_set: standard
+# mode can be either 'main' or 'aggressive'
+mode: main
+# (OPTIONAL) If proposal_set is not defined, then you can use the
+# phase1 and phase2 settings for your proposal(s).
+#
+# proposal_set can be one of: basic, standard, compatible
+# proposal_set: standard
+phase1:
+    # P1 Authentication can be one of:
+    # md5, sha1, sha-256, sha-384
+    auth: sha1
+    # Diffie-Hellman group can be one of:
+    # 1, 2, 5, 14, 19, 20, 24
+    dh_group: 2
+    # P1 Encryption can be one of:
+    # des-cbc, 3des-cbc, aes-128-cbc, aes-192-cbc, aes-256-cbc
+    encryption: 3des-cbc
+    # P1 Lifetime (in seconds) can range from:
+    # 180..86400
+    lifetime_sec: 28800
+phase2:
+    # P2 Authentication can be one of:
+    # hmac-md5-96, hmac-sha1-96, hmac-sha-256-96, hmac-sha-256-128
+    auth: hmac-sha1-96
+    # P2 Encryption can be one of:
+    # des-cbc, 3des-cbc, aes-128-cbc, aes-128-gcm, aes-192-cbc, aes-192-gcm,
+    # aes-256-cbc, aes-256-gcm
+    encryption: 3des-cbc
+    # P2 Lifetime (in seconds) can range from:
+    # 180..86400
+    lifetime_sec: 3600
+    # (OPTIONAL) P2 Lifetime (in kilobytes) can range from:
+    # 64..4294967294
+    # lifetime_kb: 10000000
+    #
+    # P2 protocol can be either of:
+    # esp, ah
+    protocol: esp
 local_ip:
     - 10.1.1.0/24
     - 192.168.2.0/24
