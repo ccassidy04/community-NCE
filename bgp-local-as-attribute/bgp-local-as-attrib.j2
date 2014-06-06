@@ -4,14 +4,14 @@
 
 interfaces {
     fe-1/2/0 {
-        unit 1 {
+        unit 0 {
             family inet {
                 address {{ d1fe_addr }};
             }
         }
     }
     lo0 {
-        unit 2 {
+        unit 0 {
             family inet {
                 address {{ d1lo0_addr }};
             }
@@ -55,21 +55,21 @@ policy-options {
 
 interfaces {
     fe-1/2/0 {
-        unit 2 {
+        unit 0 {
             family inet {
                 address {{ d2fe_addr }};
             }
         }
     }
     fe-1/2/1 {
-        unit 3 {
+        unit 0 {
             family inet {
                 address {{ d2fe121_addr }};
             }
         }
     }
     lo0 {
-        unit 2 {
+        unit 0 {
             family inet {
                 address {{ d2lo0_addr }};
             }
@@ -110,14 +110,14 @@ policy-options {
 
 interfaces {
     fe-1/2/0 {
-        unit 1 {
+        unit 0 {
             family inet {
                 address {{ d3fe_addr }};
             }
         }
     }
     lo0 {
-        unit 2 {
+        unit 0 {
             family inet {
                 address {{ d3lo0_addr }};
             }
