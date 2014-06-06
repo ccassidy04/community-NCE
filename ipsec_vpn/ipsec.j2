@@ -1,10 +1,24 @@
 security {
     ike {
+    {%- if proposal_set %}
         policy {{ name }} {
             mode main;
             proposal-set {{ proposal_set }};
             pre-shared-key ascii-text "{{ psk }}";
         }
+    {%- else %}
+        proposal {{ name }} {
+            authentication-algorithm {{ phase1.auth }};
+            dh-group group{{ phase1.dh_group }};
+            encryption-algorithm {{ phase1.encryption }};
+            lifetime-seconds {{ phase1.lifetime_sec }};
+        }
+        policy {{ name }} {
+            mode {{ mode }};
+            proposals {{ name }};
+            pre-shared-key ascii-text "{{ psk }}";
+        }
+    {%- endif %}
         gateway {{ name }} {
             ike-policy {{ name }};
             address {{ remote_endpoint }};
@@ -13,9 +27,24 @@ security {
         }
     }
     ipsec {
+    {%- if proposal_set %}
         policy {{ name }} {
             proposal-set {{ proposal_set }};
         }
+    {%- else %}
+        proposal {{ name }} {
+            authentication-algorithm {{ phase2.auth }};
+            encryption-algorithm {{ phase2.encryption }};
+            lifetime-seconds {{ phase2.lifetime_sec }};
+            protocol {{ phase2.protocol }};
+        {%- if phase2.lifetime_kb %}
+            lifetime-kilobytes {{ phase2.lifetime_kb }};
+        {%- endif %}
+        }
+        policy {{ name }} {
+            proposals {{ name }};
+        }
+    {%- endif %}
         vpn {{ name }} {
             bind-interface {{ tunnel_interface }};
             ike {
