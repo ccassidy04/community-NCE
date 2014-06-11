@@ -101,10 +101,36 @@ security {
         }
     }
     zones {
-        security-zone {{ tunnel_zone }} {
+    {%- if external_zone %}
+        security-zone {{ external_zone }} {
             host-inbound-traffic {
                 system-services {
                     ike;
+                }
+            }
+            interfaces {
+                {{ external_interface }};
+            }
+        }
+    {%- else %}
+        security-zone untrust {
+            host-inbound-traffic {
+                system-services {
+                    ike;
+                }
+            }
+            interfaces {
+                {{ external_interface }};
+            }
+        }
+    {%- endif %}
+        security-zone {{ tunnel_zone }} {
+            host-inbound-traffic {
+                system-services {
+                    all;
+                }
+                protocols {
+                    all;
                 }
             }
             interfaces {
