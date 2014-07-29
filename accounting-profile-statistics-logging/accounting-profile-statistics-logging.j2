@@ -3,6 +3,7 @@ accounting-options {
         size {{ logfile['max_size'] }};
     }
     interface-profile {{ accounting_profile_name }} {
+        file {{ logfile['name'] }}
         interval {{ interval }} ;
         fields {
             input-bytes;
