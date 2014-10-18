@@ -1,0 +1,71 @@
+security {
+    nat {
+        destination {
+            {%- for pool in pools %}
+            pool {{ pool['name'] }} {
+                address {{ pool['address'] }};
+            }
+            {%- endfor %}
+            rule-set {{ruleset_name}} {
+                from zone {{from_zone}};
+                {%- for rule in rules %}
+                rule {{ rule['name'] }} {
+                    match {
+                        destination-address {{ rule['destination_address'] }};
+                        destination-port {
+                            {{ rule['port'] }};
+                        }
+                    }
+                    then {
+                        destination-nat {
+                            pool {
+                                {{ rule['pool'] }};
+                            }
+                        }
+                    }
+                }
+                {%- endfor %}
+            }
+        }
+        proxy-arp {
+            interface {{interface}} {
+                address {
+                    {%- for rule in rules %}
+                    {{ rule['destination_address'] }};
+                    {%- endfor %}
+                }
+            }
+        }
+    }
+    policies {
+        from-zone {{from_zone}} to-zone {{to_zone}} {
+            policy {{ruleset_name}} {
+                match {
+                    source-address any;
+                    destination-address {{address_set}};
+                    {%- for rule in rules %}
+                    application {{ rule['application'] }};
+                    {%- endfor %}
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+    }
+    zones {
+        security-zone {{to_zone}} {
+            address-book {
+                {%- for address in addresses %}
+                address {{ address['name'] }} {{ address['address'] }};
+                {%- endfor %}
+                address-set {{address_set}} {
+                    {%- for address in servergroup %}
+                    address {{address['name']}};
+                    {%- endfor %}
+                }
+            }
+        }
+    }
+}
+

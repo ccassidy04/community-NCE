@@ -1,0 +1,15 @@
+---
+pool_name: pool-1
+ruleset_name: pool-nat
+address_start: 1.1.1.10/32
+address_end: 1.1.1.15/32
+
+from_zone: trust
+to_zone: untrust
+source_address: 0.0.0.0/0
+destination_address: 0.0.0.0/0
+
+## proxy-arp will be set for the pool range above on this interface
+interface: ge-0/0/0.0
+ 
+

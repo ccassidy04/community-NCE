@@ -1,0 +1,40 @@
+---
+pools: 
+  - name: dnat-pool-1
+    address: 10.1.1.100/32
+  - name: dnat-pool-2
+    address: 10.1.1.200/32
+
+ruleset_name: dst-nat
+from_zone: untrust
+to_zone: trust
+rules:
+  - name: rule1
+    destination_address: 1.1.1.100/32
+    port: 80
+    application: junos-http
+    pool: dnat-pool-1
+
+  - name: rule2
+    destination_address: 1.1.1.100/32
+    port: 110
+    application: junos-pop3
+    pool: dnat-pool-2
+
+## proxy-arp will be set for the pool range above on this interface
+interface: ge-0/0/0.0
+ 
+addresses:
+  - name: webserver
+    address: 10.1.1.100/32
+  - name: mailserver
+    address: 10.1.1.200/32
+address_set: servergroup
+servergroup: 
+  - name: webserver
+  - name: mailserver
+
+
+
+
+

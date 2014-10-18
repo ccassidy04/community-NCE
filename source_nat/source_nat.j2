@@ -1,0 +1,33 @@
+source {
+    pool {{pool_name}} {
+        address {
+            {{address_start}} to {{address_end}};
+        }
+    }
+    rule-set {{ruleset_name}} {
+        from zone {{from_zone}};
+        to zone {{to_zone}};
+        rule rule1 {
+            match {
+                source-address {{source_address}};
+                destination-address {{destination_address}};
+            }
+            then {
+                source-nat {
+                    pool {
+                        {{pool_name}};
+                    }
+                }
+            }
+        }                               
+    }
+}
+proxy-arp {
+    interface {{interface}} {
+        address {
+            {{address_start}} to {{address_end}};
+        }
+    }
+}
+
+

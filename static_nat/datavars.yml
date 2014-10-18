@@ -1,0 +1,13 @@
+---
+ruleset_name: static-nat
+from_zone: untrust
+to_zone: trust
+untrust_address: 1.1.1.100/32
+trust_address: 10.1.1.100/32
+host_name: webserver
+application: junos-http
+
+## proxy-arp will be set for the address above on this interface
+interface: ge-0/0/0.0
+ 
+

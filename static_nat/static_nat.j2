@@ -1,0 +1,50 @@
+security {
+    nat {
+        static {
+            rule-set {{ruleset_name}} {
+                from zone {{from_zone}};
+                rule rule1 {
+                    match {
+                        destination-address {{untrust_address}};
+                    }
+                    then {
+                        static-nat {
+                            prefix {
+                                {{trust_address}};
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        proxy-arp {
+            interface {{interface}} {
+                address {
+                    {{untrust_address}};
+                }                               
+            }
+        }
+    }
+    policies {
+        from-zone {{from_zone}} to-zone {{to_zone}} {       
+            policy {{ruleset_name}} {
+                match {
+                    source-address any;
+                    destination-address {{host_name}};
+                    application {{application}};
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+    }
+    zones {
+        security-zone {{to_zone}} {
+            address-book {
+                address {{host_name}} {{trust_address}};
+            }
+        }
+    }
+}
+
